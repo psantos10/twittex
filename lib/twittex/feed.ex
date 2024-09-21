@@ -8,6 +8,7 @@ defmodule Twittex.Feed do
   def list_tweeks_for_user(%User{} = user) do
     user
     |> Ecto.assoc(:tweeks)
+    |> preload(:user)
     |> order_by([m], desc: m.inserted_at, desc: m.id)
     |> Repo.all()
   end
