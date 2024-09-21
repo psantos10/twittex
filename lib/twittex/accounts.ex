@@ -44,6 +44,10 @@ defmodule Twittex.Accounts do
     if User.valid_password?(user, password), do: user
   end
 
+  def get_user_by_username!(username) do
+    Repo.get_by!(User, username: username)
+  end
+
   def get_authenticated_user(email_or_username, password)
       when is_binary(email_or_username) and is_binary(password) do
     user =

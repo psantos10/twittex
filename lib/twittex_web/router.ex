@@ -17,12 +17,6 @@ defmodule TwittexWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", TwittexWeb do
-    pipe_through :browser
-
-    get "/", PageController, :home
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", TwittexWeb do
   #   pipe_through :api
@@ -71,10 +65,14 @@ defmodule TwittexWeb.Router do
   scope "/", TwittexWeb do
     pipe_through [:browser]
 
+    get "/", PageController, :home
+
     delete "/users/log_out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :edit
     post "/users/confirm/:token", UserConfirmationController, :update
+
+    live "/:username", ProfileLive
   end
 end
