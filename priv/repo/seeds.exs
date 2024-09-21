@@ -12,8 +12,17 @@
 
 alias Twittex.Accounts
 alias Twittex.Feed
+alias Twittex.Feed.Tweek
+alias Twittex.Repo
 
-user = Accounts.get_user_by_username!("phoenixonrails")
+{:ok, user} =
+  Accounts.register_user(%{
+    username: "phoenixonrails",
+    email: "hello@phoenixonrails.com",
+    password: "password123456"
+  })
+
+# user = Accounts.get_user_by_username!("phoenixonrails")
 
 [
   "Phoenix rocks!",
@@ -25,3 +34,26 @@ user = Accounts.get_user_by_username!("phoenixonrails")
 |> Enum.each(fn content ->
   {:ok, _user} = Feed.create_tweek_for_user(user, %{content: content})
 end)
+
+users =
+  for name <- ~w(bill elon jeff mark) do
+    username = String.capitalize(name)
+    email = name <> "@phoenixonrails.com"
+    password = "Secret123456"
+
+    {:ok, user} = Accounts.register_user(%{username: username, email: email, password: password})
+    Accounts.save_user_avatar!(user, name <> ".png")
+    user
+  end
+
+{now, _} = NaiveDateTime.utc_now() |> NaiveDateTime.to_gregorian_seconds()
+
+for _ <- 1..100 do
+  Repo.insert!(%Tweek{
+    content: Faker.Lorem.sentence(),
+    user_id: Enum.random(users).id,
+    inserted_at:
+      NaiveDateTime.from_gregorian_seconds(now - :rand.uniform(30 * 24 * 60 * 60))
+      |> DateTime.from_naive!("Etc/UTC")
+  })
+end

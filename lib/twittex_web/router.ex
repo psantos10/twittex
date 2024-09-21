@@ -65,14 +65,13 @@ defmodule TwittexWeb.Router do
   scope "/", TwittexWeb do
     pipe_through [:browser]
 
-    get "/", PageController, :home
-
     delete "/users/log_out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :edit
     post "/users/confirm/:token", UserConfirmationController, :update
 
+    live "/", FeedLive
     live "/:username", ProfileLive
   end
 end
