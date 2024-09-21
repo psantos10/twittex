@@ -15,5 +15,6 @@ defmodule Twittex.Feed.Tweek do
     tweek
     |> cast(attrs, [:content])
     |> validate_required([:content])
+    |> validate_length(:content, max: 256)
   end
 end

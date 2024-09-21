@@ -14,10 +14,13 @@ defmodule Twittex.Feed do
   end
 
   def create_tweek_for_user(%User{} = user, attrs \\ %{}) do
-    user
-    |> Ecto.build_assoc(:tweeks)
-    |> Tweek.changeset(attrs)
-    |> Repo.insert()
+    with {:ok, tweek} <-
+           user
+           |> Ecto.build_assoc(:tweeks)
+           |> Tweek.changeset(attrs)
+           |> Repo.insert() do
+      {:ok, Repo.preload(tweek, :user)}
+    end
   end
 
   def change_tweek(%Tweek{} = tweek, attrs \\ %{}) do
