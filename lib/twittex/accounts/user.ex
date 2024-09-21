@@ -10,6 +10,7 @@ defmodule Twittex.Accounts.User do
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
+    field :avatar, :string
 
     has_many :tweeks, Twittex.Feed.Tweek
 
@@ -45,6 +46,12 @@ defmodule Twittex.Accounts.User do
     |> validate_email(opts)
     |> validate_username()
     |> validate_password(opts)
+  end
+
+  def avatar_changeset(user, avatar) do
+    user
+    |> cast(%{avatar: avatar}, [:avatar])
+    |> validate_required([:avatar])
   end
 
   defp validate_email(changeset, opts) do

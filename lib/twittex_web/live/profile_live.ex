@@ -1,6 +1,7 @@
 defmodule TwittexWeb.ProfileLive do
   use TwittexWeb, :live_view
 
+  import TwittexWeb.AvatarHelper
   import TwittexWeb.FeedComponents
 
   alias Twittex.Accounts

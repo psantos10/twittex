@@ -1,6 +1,8 @@
 defmodule TwittexWeb.FeedComponents do
   use TwittexWeb, :html
 
+  import TwittexWeb.AvatarHelper
+
   alias Twittex.Feed.Tweek
 
   attr :tweek, Tweek
@@ -10,7 +12,7 @@ defmodule TwittexWeb.FeedComponents do
     <div class="bg-white p-5 rounded-lg shadow mb-3">
       <div class="flex justify-between items-center">
         <div class="flex items-center">
-          <img src={~p"/images/default_avatar.png"} class="h-12 w-12 rounded" alt="Avatar" />
+          <img src={avatar_path(@tweek.user)} class="h-12 w-12 rounded" alt="Avatar" />
           <div class="ml-3">
             <h2 class="font-bold text-lg">@<%= @tweek.user.username %></h2>
             <p class="text-gray-400 ml-2"><%= Timex.from_now(@tweek.inserted_at) %></p>
